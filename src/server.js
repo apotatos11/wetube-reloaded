@@ -1,45 +1,21 @@
 import express from "express";
+import morgan from "morgan";
+import globalRouter from "./routers/globalRouter";
+import videoRouter from "./routers/videoRouter";
+import userRouter from "./routers/userRouter";
 
-//exxpress 어플리케이션을 만든다
 const PORT = 4000;
+
 const app = express();
+const logger = morgan("dev");
 
-const logger = (req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  console.log(req.protocol);
-  const logDate = new Date();
-  console.log(
-    "Time :",
-    `${logDate.getFullYear()}.${logDate.getMonth() + 1}.${logDate.getDate()}`
-  );
-  next();
-};
-
-const privateMiddleware = (req, res, next) => {
-  const url = req.url;
-  if (url === "/protected") {
-    return res.send("<h1>Not allowed</h1>");
-  }
-  console.log("Allowed, you may continue ");
-  next();
-};
-
-const handleHome = (req, res) => {
-  return res.send("I love you");
-};
-
-const handleLogin = (req, res) => {
-  return res.send("Login Here!!");
-};
-
-const handleProtectd = (req, res) => {
-  return res.send("Welcome to the private lounge.");
-};
-
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
 app.use(logger);
-app.use(privateMiddleware);
-app.get("/", handleHome);
-app.get("/protected", handleProtectd);
+app.use(express.urlencoded({ extended: true }));
+app.use("/", globalRouter);
+app.use("/videos", videoRouter);
+app.use("/users", userRouter);
 
 const handleListening = () =>
   console.log(`Server listening on port http://localhost:${PORT}`);
