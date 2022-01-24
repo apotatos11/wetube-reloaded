@@ -7,7 +7,7 @@
     "url": "git+https://github.com/apotatos11/wetube-reloaded.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/init.js"
   },
   "author": "Wonil<apotstos11@gmail.com>",
   "license": "MIT",
@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/apotatos11/wetube-reloaded#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.2",
     "mongoose": "^6.1.6",
     "morgan": "^1.10.0",
