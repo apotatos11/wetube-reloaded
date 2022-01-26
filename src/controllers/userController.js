@@ -161,7 +161,10 @@ export const postEdit = async (req, res) => {
       user: { _id },
     },
     body: { name, email, username, location },
+    file,
   } = req;
+
+  console.log(file);
 
   if (req.session.user.email !== email) {
     const exists = await User.exists({ email });
@@ -214,7 +217,6 @@ export const postChangePassword = async (req, res) => {
 
   const user = await User.findById(_id);
 
-  console.log(req.body);
   const ok = await bcrypt.compare(oldPassword, user.password);
   if (!ok) {
     return res.status(400).render("users/change-password", {
