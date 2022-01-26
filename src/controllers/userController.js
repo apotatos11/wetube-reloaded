@@ -163,9 +163,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
   } = req;
 
-  //session정보와 input정보가 다르면 업데이트 하는데
-  //input정보가 이미 user에 있는 정보라면 error를 띄우고
-
   if (req.session.user.email !== email) {
     const exists = await User.exists({ email });
     if (exists) {
@@ -200,6 +197,14 @@ export const postEdit = async (req, res) => {
   req.session.user = updatedUser;
 
   return res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = (req, res) => {
+  //send notification
+  return res.redirect("/");
 };
 
 export const see = (req, res) => res.send("See User");
