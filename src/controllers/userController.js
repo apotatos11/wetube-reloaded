@@ -1,9 +1,11 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
 export const getJoin = (req, res) =>
   res.render("join", { pageTitle: "Create Account" });
+
 export const postJoin = async (req, res) => {
   const { email, username, password, password2, name, location } = req.body;
   const exists = await User.exists({ $or: [{ username }, { email }] });
@@ -94,7 +96,6 @@ export const finishGithubLogin = async (req, res) => {
       },
     })
   ).json();
-  console.log(tokenRequest);
 
   if ("access_token" in tokenRequest) {
     const { access_token } = tokenRequest;
@@ -139,7 +140,6 @@ export const finishGithubLogin = async (req, res) => {
     //create an account
     req.session.loggedIn = true;
     req.session.user = user;
-    console.log("user", user);
     res.redirect("/");
   } else {
     return res.redirect("/login");
@@ -155,8 +155,51 @@ export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
 
-export const postEdit = (req, res) => {
-  return res.render("edit-profiel");
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+
+  //session정보와 input정보가 다르면 업데이트 하는데
+  //input정보가 이미 user에 있는 정보라면 error를 띄우고
+
+  if (req.session.user.email !== email) {
+    const exists = await User.exists({ email });
+    if (exists) {
+      return res.status(400).render("edit-profile", {
+        pageTitle: "Edit Profile",
+        errorMessage: "This email is already taken.",
+      });
+    }
+  }
+
+  if (req.session.user.username !== username) {
+    const exists = await User.exists({ username });
+    if (exists) {
+      return res.status(400).render("edit-profile", {
+        pageTitle: "Edit Profile",
+        errorMessage: "This username is already taken.",
+      });
+    }
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+
+  req.session.user = updatedUser;
+
+  return res.redirect("/users/edit");
 };
 
 export const see = (req, res) => res.send("See User");
