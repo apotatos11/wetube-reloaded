@@ -7,8 +7,8 @@
     "url": "git+https://github.com/apotatos11/wetube-reloaded.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js",
-    "assets": "webpack --config webpack.config.js"
+    "dev:server": "nodemon",
+    "dev:assets": "webpack"
   },
   "author": "Wonil<apotstos11@gmail.com>",
   "license": "MIT",
