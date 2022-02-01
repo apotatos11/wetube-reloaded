@@ -94,7 +94,30 @@ muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeChange);
 video.addEventListener("loadedmetadata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
-timeline.addEventListener("input", handleTimelineChange);
-fullScreenBtn.addEventListener("click", handleFullScreen);
 video.addEventListener("mousemove", handleMouseMove);
 video.addEventListener("mouseleave", handleMouseLeave);
+timeline.addEventListener("input", handleTimelineChange);
+fullScreenBtn.addEventListener("click", handleFullScreen);
+video.addEventListener("click", handlePlayClick);
+window.addEventListener("keydown", (event) => {
+  if (event.keyCode === 32) {
+    handlePlayClick();
+  }
+
+  if (event.keyCode === 70) {
+    const fullScreen = document.fullscreenElement;
+    if (!fullScreen) {
+      fullScreenBtn.innerText = "Exit Full Screnn";
+      videoContainer.requestFullscreen();
+    }
+  }
+});
+video.addEventListener("keydown", (event) => {
+  if (event.keyCode === 27) {
+    const fullScreen = document.fullscreenElement;
+    if (fullScreen) {
+      fullScreenBtn.innerText = "Enter Full Screnn";
+      document.exitFullscreen();
+    }
+  }
+});
