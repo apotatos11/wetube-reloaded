@@ -32,6 +32,7 @@ export const postJoin = async (req, res) => {
       password,
       location,
     });
+    req.flash("success", "Join Success");
     return res.redirect("/login");
   } catch (error) {
     return res.status(400).render("join", {
@@ -65,6 +66,7 @@ export const postLogin = async (req, res) => {
   }
   req.session.loggedIn = true;
   req.session.user = user;
+  req.flash("success", "Login Success");
   res.redirect("/");
 };
 
@@ -122,6 +124,7 @@ export const finishGithubLogin = async (req, res) => {
     );
 
     if (!emailObj) {
+      req.flash("error", "email Not exist");
       return res.redirect("/login");
     }
 
@@ -141,6 +144,7 @@ export const finishGithubLogin = async (req, res) => {
     //create an account
     req.session.loggedIn = true;
     req.session.user = user;
+    req.flash("success", "Login Success");
     res.redirect("/");
   } else {
     return res.redirect("/login");
@@ -148,7 +152,9 @@ export const finishGithubLogin = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  req.session.destroy();
+  req.session.user = null;
+  res.locals.loggedInUser = req.session.user;
+  req.session.loggedIn = false;
   return res.redirect("/");
 };
 
@@ -198,15 +204,14 @@ export const postEdit = async (req, res) => {
     },
     { new: true }
   );
-
   req.session.user = updatedUser;
-
+  req.flash("success", "Updated User informaiton");
   return res.redirect("/users/edit");
 };
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
-    req.flash("error", "Can't change Passwor");
+    req.flash("error", "Can't change Password");
     return res.redirect("/");
   }
   return res.render("users/change-password", { pageTitle: "Change Password" });
