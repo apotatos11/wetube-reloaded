@@ -109,14 +109,6 @@ window.addEventListener("keydown", (event) => {
   if (event.keyCode === 32) {
     handlePlayClick();
   }
-
-  if (event.keyCode === 70) {
-    const fullScreen = document.fullscreenElement;
-    if (!fullScreen) {
-      fullScreenBtn.innerText = "Exit Full Screnn";
-      videoContainer.requestFullscreen();
-    }
-  }
 });
 video.addEventListener("keydown", (event) => {
   if (event.keyCode === 27) {
