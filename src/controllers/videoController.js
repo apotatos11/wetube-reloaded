@@ -157,8 +157,7 @@ export const createComment = async (req, res) => {
     video: id,
   });
 
-  console.log("commentid:", comment._id);
   video.comments.push(comment._id);
   video.save();
-  res.sendStatus(201);
+  return res.status(201).json({ newCommentId: comment._id });
 };
