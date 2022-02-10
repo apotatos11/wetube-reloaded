@@ -65,7 +65,3 @@ if (form) {
 }
 
 deleteBtn.forEach((elm) => elm.addEventListener("click", handleDelete));
-
-// delete 기능 추가
-// ❌표시에 이벤트리스터를 추가 한다.
-// 동시에 html 삭제하는 함수도 만든다.
