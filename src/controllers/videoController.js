@@ -164,10 +164,6 @@ export const createComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
   const { id } = req.params;
-  const {
-    user: { _id },
-  } = req.session;
-
   const comment = await Comment.findById(id);
 
   if (!comment) {
