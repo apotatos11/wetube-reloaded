@@ -8,6 +8,7 @@ const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
+const form = document.getElementById("commentForm");
 
 let controlsTimeout = null;
 let volumeValue = 0.5;
@@ -110,6 +111,8 @@ window.addEventListener("keydown", (event) => {
     handlePlayClick();
   }
 });
+form.removeEventListener("click", handlePlayClick);
+
 video.addEventListener("keydown", (event) => {
   if (event.keyCode === 27) {
     const fullScreen = document.fullscreenElement;
