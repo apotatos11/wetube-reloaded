@@ -7,7 +7,7 @@
     "url": "git+https://github.com/apotatos11/wetube-reloaded.git"
   },
   "scripts": {
-    "start": "node build/init.js",
+    "start": "node build/init.js"
     "build:server": "babel src -d build",
     "dev:server": "nodemon",
     "dev:assets": "webpack"
