@@ -14,6 +14,8 @@ let controlsTimeout = null;
 let volumeValue = 0.5;
 video.volume = volumeValue;
 
+console.log(video);
+
 const handlePlayClick = (e) => {
   if (video.paused) {
     video.play();
@@ -98,7 +100,8 @@ const handleEnded = () => {
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeChange);
-video.addEventListener("loadedmetadata", handleLoadedMetadata);
+video.addEventListener("canplay", handleLoadedMetadata);
+handleLoadedMetadata();
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("ended", handleEnded);
 video.addEventListener("mousemove", handleMouseMove);
